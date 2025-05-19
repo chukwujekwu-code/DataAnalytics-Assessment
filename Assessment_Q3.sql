@@ -1,6 +1,7 @@
 -- Question 3
 
-WITH latest_transactions AS (
+WITH 
+latest_transactions AS (
     SELECT 
         plan_id,
         MAX(transaction_date) AS last_transaction_date
@@ -10,12 +11,14 @@ WITH latest_transactions AS (
 SELECT 
     p.id AS plan_id,
     p.owner_id,
+    -- creates a column that returns a check on whether the plan is savings or investment
     CASE 
         WHEN p.is_regular_savings = 1 THEN 'Savings'
         WHEN p.is_a_fund = 1 THEN 'Investment'
         ELSE 'None'
     END AS type,
     lt.last_transaction_date,
+    -- calculates the number of days between today and the last recorded transaction date
     timestampdiff(DAY, lt.last_transaction_date,  CURRENT_DATE) AS inactivity_days
 FROM plans_plan p
 JOIN latest_transactions lt 

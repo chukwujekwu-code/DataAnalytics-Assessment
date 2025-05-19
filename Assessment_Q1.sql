@@ -3,7 +3,7 @@ SHOW DATABASES;
 USE adashi_staging;
 
 -- Question 1
--- Find users with both funded savings plans and funded investment plans
+-- Find users with both funded savings plan
 WITH 
 funded_savings AS (
     SELECT

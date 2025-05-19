@@ -1,16 +1,21 @@
 -- Question 2
 
-WITH customer_transactions AS (
+WITH 
+customer_transactions AS (
     SELECT 
-        owner_id,
+        u.id,
         COUNT(*) AS total_transactions,
-        timestampdiff(MONTH, MIN(transaction_date),  MAX(transaction_date)) + 1 AS months_active
-    FROM savings_savingsaccount
-    GROUP BY owner_id
+        
+        -- calculate the total number of months client has been active
+        timestampdiff(MONTH, MIN(transaction_date),  MAX(transaction_date)) AS months_active
+    FROM savings_savingsaccount s
+    JOIN users_customuser u
+		ON s.owner_id = u.id
+    GROUP BY u.id
 ),
 customer_frequency AS (
     SELECT
-        owner_id,
+        id,
         total_transactions,
         months_active,
         ROUND(total_transactions / 
@@ -19,7 +24,7 @@ customer_frequency AS (
 ),
 categorized_customers AS (
     SELECT
-        owner_id,
+        id,
         transactions_per_month,
         CASE 
             WHEN transactions_per_month <=2 THEN 'Low Frequency'

@@ -99,9 +99,9 @@
 
 ## Challenges
 
-* The .sql file was too large for some GUI interfaces to process efficiently. I had to load them through cli to avoid timeout and rendering issues.
+* The .sql file was too large for some GUI interfaces to process efficiently. I had to load them through cli to avoid timeout, lagging and rendering issues.
 
-* All financial values were stored in kobo. I converted them to naira by dividing by 100 before any aggregation or presentation to ensure business relevance.
+* All financial values were stored in kobo. I converted them to naira by dividing by 100 before any aggregation or presentation to ensure business consistency.
 
 * To avoid performance bottlenecks, I avoided repeating heavy joins and opted for CTEs, which improved both readability and execution performance.
 

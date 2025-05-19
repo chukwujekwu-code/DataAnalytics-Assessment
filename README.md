@@ -6,18 +6,18 @@
 
 * I created two Common Table Expressions (CTEs) to break down the solution logic and improve error debugging:
 
-  * funded_savings: Identifies customers with at least one savings plan (is_regular_savings = 1) and confirmed deposits (confirmed_amount > 0).
-  * funded_investments: Identifies customers with at least one investment plan (is_a_fund = 1) and confirmed deposits.
+  * funded_savings: Identified customers with a savings plan (is_regular_savings = 1) and confirmed deposits (checking that confirmed_amount > 0).
+  * funded_investments: Identified customers with an investment plan (is_a_fund = 1) and confirmed deposits.
 
-* Each CTE ensures that the associated plans are funded**, by checking confirmed_amount > 0.
+* Each CTE ensures that the associated plans are funded, by checking confirmed_amount > 0.
 
 * Both CTEs were joined using owner_id with the users_customuser table to retrieve customer information.
 
 * Only customers who appear in both CTEs were included, confirming that they hold both a savings and an investment plan.
 
-* The full customer name was constructed by concatenating first_name and last_name, rather than relying on a single name column.
+* The full customer name was constructed by concatenating first_name and last_name, rather than relying on the name column which was found to be filled with nulls.
 
-* The total deposit amount was converted from kobo to naira by dividing by 100 for accuracy and presentation.
+* The total deposit amount was converted from kobo to naira by dividing by 100 for consistency.
 
 * Final results were ordered in descending order of total deposits to highlight the most valuable customers.
 
@@ -79,15 +79,11 @@
 
 * I broke the solution into three CTEs to clarify the logic and streamline debugging:
 
-  * transaction_summary: Calculated the total number of transactions, the sum of confirmed_amount (converted from kobo to naira), and the average profit per transaction, assuming a 0.1% profit rate.
+  * transaction_summary: Calculated the total number of transactions, the sum of confirmed_amount, and the average profit per transaction, assuming a 0.1% profit rate (converted from kobo to naira).
 
   * tenure_data: Calculated the number of months each customer has been on the platform using TIMESTAMPDIFF and CURRENT_DATE, and built the full name using CONCAT(first_name, last_name).
 
-  * clv_calc: Merged both CTEs and applied the simplified CLV formula:
-
-    $$
-    \text{CLV} = \left(\frac{\text{total\_transactions}}{\text{tenure\_months}}\right) \times 12 \times \text{avg\_profit}
-    $$
+  * clv_calc: Merged both CTEs and applied the estimated CLV formula
 
 * The final output included:
 
